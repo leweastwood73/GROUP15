@@ -1,5 +1,4 @@
 SELECT
-    "_fivetran_id" AS fivetran_id,
     TRIM(PAGE_NAME) AS page_name,
     VIEW_AT AS view_at,
     TRY_TO_NUMBER(REGEXP_REPLACE(TRIM(SESSION_ID), '^s', '')) AS session_id,
