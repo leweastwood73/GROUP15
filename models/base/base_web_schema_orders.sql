@@ -1,5 +1,4 @@
 SELECT
-    "_fivetran_id" AS fivetran_id,
     LOWER(TRIM(PAYMENT_METHOD)) AS payment_method,
     TRIM(SHIPPING_ADDRESS) AS shipping_address,
     TRY_TO_NUMBER(REGEXP_REPLACE(TRIM(ORDER_ID), '^[a-zA-Z]', '')) AS order_id,
@@ -10,7 +9,5 @@ SELECT
     TRIM(STATE) AS state,
     TRIM(PHONE) AS phone,
     TRIM(PAYMENT_INFO) AS payment_info,
-    TRY_TO_DECIMAL(REGEXP_REPLACE(SHIPPING_COST, '[^0-9.]', ''), 10, 2) AS shipping_cost,
-    "_fivetran_deleted" AS fivetran_deleted,
-    "_fivetran_synced" AS fivetran_synced
+    TRY_TO_DECIMAL(REGEXP_REPLACE(SHIPPING_COST, '[^0-9.]', ''), 10, 2) AS shipping_cost
 FROM LOAD.WEB_SCHEMA.ORDERS
