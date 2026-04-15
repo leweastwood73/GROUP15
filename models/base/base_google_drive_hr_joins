@@ -4,7 +4,7 @@ SELECT
     _modified,
     _fivetran_synced,
     EMPLOYEE_ID,
-    TRIM(REGEXP_REPLACE(HIRE_DATE, 'day', '', 1, 0, 'i')) AS HIRE_DATE,
+    TRY_TO_DATE(REGEXP_REPLACE(HIRE_DATE, 'day\\s*', '', 1, 0, 'i')) AS HIRE_DATE,
     NAME,
     CITY,
     ADDRESS,
