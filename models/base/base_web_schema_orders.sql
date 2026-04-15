@@ -1,5 +1,5 @@
 SELECT
-    _fivetran_id AS fivetran_id,
+    "_fivetran_id" AS fivetran_id,
     LOWER(TRIM(PAYMENT_METHOD)) AS payment_method,
     TRIM(SHIPPING_ADDRESS) AS shipping_address,
     TRY_TO_NUMBER(REGEXP_REPLACE(ORDER_ID, '[^0-9]', '')) AS order_id,
