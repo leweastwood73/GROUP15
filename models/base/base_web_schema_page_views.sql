@@ -5,4 +5,4 @@ SELECT
     TRY_TO_NUMBER(REGEXP_REPLACE(TRIM(SESSION_ID), '^s', '')) AS session_id,
     "_fivetran_deleted" AS fivetran_deleted,
     TRY_TO_TIMESTAMP_NTZ(REPLACE("_fivetran_synced", ' Z', '')) AS fivetran_synced
-FROM LOAD.WEB_SCHEMA.YOUR_TABLE_NAME
+FROM LOAD.WEB_SCHEMA.PAGE_VIEWS
