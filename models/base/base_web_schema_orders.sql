@@ -12,5 +12,5 @@ SELECT
     TRIM(PAYMENT_INFO) AS payment_info,
     TRY_TO_DECIMAL(REGEXP_REPLACE(SHIPPING_COST, '[^0-9.]', ''), 10, 2) AS shipping_cost,
     TRY_TO_BOOLEAN("_fivetran_deleted") AS fivetran_deleted,
-    TRY_TO_TIMESTAMP_NTZ(REPLACE(_fivetran_synced, ' Z', '')) AS fivetran_synced
+    TRY_TO_TIMESTAMP_NTZ(REPLACE("_fivetran_synced", ' Z', '')) AS fivetran_synced
 FROM LOAD.WEB_SCHEMA.ORDERS
