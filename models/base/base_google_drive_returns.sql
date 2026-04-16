@@ -4,7 +4,7 @@ SELECT
     _MODIFIED AS modified,
     _FIVETRAN_SYNCED AS fivetran_synced,
     RETURNED_AT AS returned_at,
-    ORDER_ID AS order_id,
+    TRY_TO_NUMBER(REGEXP_REPLACE(TRIM(ORDER_ID), '^o', '')) AS order_id,
     CASE
         WHEN LOWER(IS_REFUNDED) = 'yes' THEN TRUE
         WHEN LOWER(IS_REFUNDED) = 'no' THEN FALSE
