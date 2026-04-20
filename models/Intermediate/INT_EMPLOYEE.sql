@@ -12,11 +12,7 @@ hr_joins as (
         annual_salary,
         _modified  as source_modified_at,
         _fivetran_synced as fivetran_synced_at
-<<<<<<< HEAD
-    from {{ ref('BASE_GOOGLE_DRIVE_HR_JOINS') }}
-=======
-    from {{ source('google_drive', 'HR_JOINS') }}
->>>>>>> e971b5470f3a9d0e9c607204be400efc2aa2d54f
+    from {{ ref('base_google_drive_hr_joins') }}
 
 ),
 
@@ -25,11 +21,7 @@ hr_quits as (
     select
         employee_id,
         quit_date
-<<<<<<< HEAD
-    from {{ ref('BASE_GOOGLE_DRIVE_HR_QUIT') }}
-=======
-    from {{ source('google_drive', 'HR_QUITS') }}
->>>>>>> e971b5470f3a9d0e9c607204be400efc2aa2d54f
+    from {{ ref('base_google_drive_hr_quit') }}
 
 ),
 
