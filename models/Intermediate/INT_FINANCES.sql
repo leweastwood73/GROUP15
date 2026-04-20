@@ -1,16 +1,14 @@
-USE DATABASE DEV;
-USE SCHEMA LE_BASE;
+{{ config(materialized='table') }}
 
-CREATE OR REPLACE TABLE INT_DAILY_FINANCE AS
 WITH expenses_clean AS (
   SELECT
-    TO_DATE("DATE")                         AS business_date,
-    LOWER(TRIM("EXPENSE_TYPE"))             AS expense_type,
-    TRY_TO_DECIMAL("EXPENSE_AMOUNT", 18, 2) AS expense_amount,
+    TO_DATE("DATE")                           AS business_date,
+    LOWER(TRIM("EXPENSE_TYPE"))               AS expense_type,
+    TRY_TO_DECIMAL("EXPENSE_AMOUNT", 18, 2)  AS expense_amount,
     "_FILE",
     "_LINE",
     "_FIVETRAN_SYNCED"
-  FROM BASE_GOOGLE_DRIVE__EXPENSES
+  FROM {{ ref('BASE_GOOGLE_DRIVE__EXPENSES') }}
   QUALIFY ROW_NUMBER() OVER (
     PARTITION BY "_FILE", "_LINE"
     ORDER BY "_FIVETRAN_SYNCED" DESC
@@ -18,13 +16,13 @@ WITH expenses_clean AS (
 ),
 orders_clean AS (
   SELECT
-    TO_DATE("ORDER_AT")                      AS business_date,
-    "ORDER_ID"                               AS order_id,
-    LOWER(TRIM("PAYMENT_METHOD"))            AS payment_method,
-    "STATE"                                  AS state,
-    TRY_TO_DECIMAL("TAX_RATE", 8, 4)         AS tax_rate,
-    TRY_TO_DECIMAL("SHIPPING_COST", 18, 2)   AS shipping_cost
-  FROM BASE_WEB_SCHEMA_ORDERS
+    TO_DATE("ORDER_AT")                        AS business_date,
+    "ORDER_ID"                                 AS order_id,
+    LOWER(TRIM("PAYMENT_METHOD"))              AS payment_method,
+    "STATE"                                    AS state,
+    TRY_TO_DECIMAL("TAX_RATE", 8, 4)           AS tax_rate,
+    TRY_TO_DECIMAL("SHIPPING_COST", 18, 2)     AS shipping_cost
+  FROM {{ ref('BASE_WEB_SCHEMA_ORDERS') }}
 ),
 expenses_daily AS (
   SELECT
@@ -54,7 +52,6 @@ SELECT
   e.hr_expense,
   e.tech_tool_expense,
   e.warehouse_expense
-FROM orders_daily
+FROM orders_daily o
 FULL OUTER JOIN expenses_daily e
   ON o.business_date = e.business_date
-ORDER BY 1;
