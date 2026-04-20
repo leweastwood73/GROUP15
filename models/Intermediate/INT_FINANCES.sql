@@ -1,11 +1,10 @@
--- models/Intermediate/INT_FINANCES.sql
 {{ config(materialized='table') }}
 
 WITH expenses_clean AS (
   SELECT
-    TO_DATE("DATE")                                          AS business_date,
-    LOWER(TRIM("EXPENSE_TYPE"))                              AS expense_type,
-    TRY_TO_DECIMAL(TO_VARCHAR("EXPENSE_AMOUNT"), 18, 2)      AS expense_amount,
+    TO_DATE("DATE") AS business_date,
+    LOWER(TRIM("EXPENSE_TYPE")) AS expense_type,
+    CAST(NULLIF(TO_VARCHAR("EXPENSE_AMOUNT"), '') AS NUMBER(18,2)) AS expense_amount,
     "_FILE",
     "_LINE",
     "_FIVETRAN_SYNCED"
@@ -18,10 +17,10 @@ WITH expenses_clean AS (
 
 orders_clean AS (
   SELECT
-    TO_DATE("ORDER_AT")                                      AS business_date,
-    "ORDER_ID"                                               AS order_id,
-    TRY_TO_DECIMAL(TO_VARCHAR("TAX_RATE"), 8, 4)             AS tax_rate,
-    TRY_TO_DECIMAL(TO_VARCHAR("SHIPPING_COST"), 18, 2)       AS shipping_cost
+    TO_DATE("ORDER_AT") AS business_date,
+    "ORDER_ID" AS order_id,
+    CAST("TAX_RATE" AS NUMBER(8,4)) AS tax_rate,
+    CAST("SHIPPING_COST" AS NUMBER(18,2)) AS shipping_cost
   FROM {{ source('web_schema', 'ORDERS') }}
 ),
 
@@ -40,8 +39,8 @@ orders_daily AS (
   SELECT
     business_date,
     COUNT(DISTINCT order_id) AS order_count,
-    SUM(shipping_cost)       AS total_shipping_cost,
-    AVG(tax_rate)            AS avg_tax_rate
+    SUM(shipping_cost) AS total_shipping_cost,
+    AVG(tax_rate) AS avg_tax_rate
   FROM orders_clean
   GROUP BY 1
 )
