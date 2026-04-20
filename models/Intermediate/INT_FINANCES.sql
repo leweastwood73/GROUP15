@@ -54,7 +54,7 @@ SELECT
   e.hr_expense,
   e.tech_tool_expense,
   e.warehouse_expense
-FROM orders_daily o
+FROM orders_daily
 FULL OUTER JOIN expenses_daily e
   ON o.business_date = e.business_date
 ORDER BY 1;
