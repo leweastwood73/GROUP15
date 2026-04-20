@@ -1,6 +1,3 @@
--- models/Intermediate/INT_FINANCES.sql
-{{ config(materialized='table') }}
-
 WITH expenses_clean AS (
   SELECT
     TO_DATE("DATE") AS business_date,
