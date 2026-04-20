@@ -12,7 +12,7 @@ hr_joins as (
         annual_salary,
         _modified  as source_modified_at,
         _fivetran_synced as fivetran_synced_at
-    from {{ source('le_base', 'base_google_drive_hr_joins') }}
+    from {{ source('google_drive', 'hr_joins') }}
 
 ),
 
@@ -21,7 +21,7 @@ hr_quits as (
     select
         employee_id,
         quit_date
-    from {{ source('le_base', 'base_google_drive_hr_quit') }}
+    from {{ source('google_drive', 'hr_quits') }}
 
 ),
 
