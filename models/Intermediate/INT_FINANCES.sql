@@ -1,14 +1,15 @@
+-- models/Intermediate/INT_FINANCES.sql
 {{ config(materialized='table') }}
 
 WITH expenses_clean AS (
   SELECT
     TO_DATE("DATE")                           AS business_date,
     LOWER(TRIM("EXPENSE_TYPE"))               AS expense_type,
-    TRY_TO_DECIMAL("EXPENSE_AMOUNT", 18, 2)  AS expense_amount,
+    TRY_TO_DECIMAL("EXPENSE_AMOUNT", 18, 2)   AS expense_amount,
     "_FILE",
     "_LINE",
     "_FIVETRAN_SYNCED"
-  FROM {{ ref('BASE_GOOGLE_DRIVE__EXPENSES') }}
+  FROM {{ source('google_drive', 'EXPENSES') }}
   QUALIFY ROW_NUMBER() OVER (
     PARTITION BY "_FILE", "_LINE"
     ORDER BY "_FIVETRAN_SYNCED" DESC
@@ -18,11 +19,9 @@ orders_clean AS (
   SELECT
     TO_DATE("ORDER_AT")                        AS business_date,
     "ORDER_ID"                                 AS order_id,
-    LOWER(TRIM("PAYMENT_METHOD"))              AS payment_method,
-    "STATE"                                    AS state,
     TRY_TO_DECIMAL("TAX_RATE", 8, 4)           AS tax_rate,
     TRY_TO_DECIMAL("SHIPPING_COST", 18, 2)     AS shipping_cost
-  FROM {{ ref('BASE_WEB_SCHEMA_ORDERS') }}
+  FROM {{ source('web_schema', 'ORDERS') }}
 ),
 expenses_daily AS (
   SELECT
