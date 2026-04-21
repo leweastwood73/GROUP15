@@ -43,7 +43,7 @@ models:
     Intermediate:
       +materialized: view
       +schema: Intermediate
-      +database: PROD
+      +database: DEV
     Analytics:
       +materialized: table
       +schema: Analytics
