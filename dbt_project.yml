@@ -36,17 +36,18 @@ clean-targets:         # directories to be removed by `dbt clean`
 # using the `{{ config(...) }}` macro.
 
 models:
-  google_drive:
-    # Applies to all files under models/example/
+  selling_plants_online:
     base:
       +materialized: view
       +schema: BASE
     Intermediate:
       +materialized: view
       +schema: Intermediate
+      +database: PROD
     Analytics:
       +materialized: table
       +schema: Analytics
+      +database: PROD
     core:
       +materialized: table
       +schema: CORE
