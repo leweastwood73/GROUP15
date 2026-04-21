@@ -17,4 +17,4 @@ SELECT
     MAX(item_view_at) AS last_item_view_at
 FROM cleaned_item_views
 GROUP BY item_name
-ORDER BY item_name;
+ORDER BY item_name
