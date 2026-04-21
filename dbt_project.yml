@@ -36,7 +36,7 @@ clean-targets:         # directories to be removed by `dbt clean`
 # using the `{{ config(...) }}` macro.
 
 models:
-  selling_plants_online:
+  google_drive:
     # Applies to all files under models/example/
     base:
       +materialized: view
