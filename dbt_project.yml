@@ -41,12 +41,12 @@ models:
     base:
       +materialized: view
       +schema: BASE
-    intermediate:
+    Intermediate:
       +materialized: view
-      +schema: INTERMEDIATE
-    analytics:
+      +schema: Intermediate
+    Analytics:
       +materialized: table
-      +schema: ANALYTICS
+      +schema: Analytics
     core:
       +materialized: table
       +schema: CORE
