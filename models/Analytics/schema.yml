@@ -1,0 +1,40 @@
+version: 2
+
+models:
+    - name: DIM_CLIENT
+      description: The table contains records of client activity, specifically tracking client interactions and behavior. Each record represents a single client and includes details about their session history, order history, and conversion status.
+      columns:
+        - name: client_id
+          description: The unique id assigned to each client.
+          tests:
+            - unique
+            - not_null
+        
+        - name: converted_sessions
+          description: The total number of sessions that resulted in a successful conversion or order.
+          tests:
+            - not_null
+
+        - name: first_session_at
+          description: The timestamp indicating when the client's first session occurred.
+
+        - name: has_ever_ordered
+          description: A boolean or binary flag indicating whether the client has ever placed an order.
+          tests:
+            - not_null
+            - accepted_values:
+                values: [0, 1]
+                quote: false
+
+        - name: last_session_at
+          description: The timestamp indicating when the client's most recent session occurred.
+
+        - name: total_orders
+          description: The total number of orders placed by the client over their lifetime.
+          tests:
+            - not_null
+
+        - name: total_sessions
+          description: The total number of sessions the client has had.
+          tests:
+            - not_null
