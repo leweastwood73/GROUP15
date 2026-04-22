@@ -25,7 +25,8 @@ models:
         description: "Flag indicating whether the client has ever placed at least one order."
         tests:
           - accepted_values:
-              values: [0, 1]
+              arguments:
+                values: [0, 1]
 
   - name: DIM_EMPLOYEE
     description: "One row per employee, including both active employees and employees who have already quit."
@@ -55,7 +56,8 @@ models:
         description: "Current employment status for the employee."
         tests:
           - accepted_values:
-              values: ['active', 'inactive']
+              arguments:
+                values: ['active', 'inactive']
       - name: tenure_days
         description: "Number of days between hire date and quit date or current date."
       - name: source_modified_at
@@ -187,7 +189,8 @@ models:
       - name: has_order
         description: "Flag indicating whether the session resulted in at least one order."
         tests:
-      - accepted_values:
-          arguments:
-            values: ['active', 'inactive']
+          - accepted_values:
+              arguments:
+                values: [0, 1]
+
 
