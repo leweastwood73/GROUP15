@@ -187,5 +187,7 @@ models:
       - name: has_order
         description: "Flag indicating whether the session resulted in at least one order."
         tests:
-          - accepted_values:
-              values: [0, 1]
+      - accepted_values:
+          arguments:
+            values: ['active', 'inactive']
+
