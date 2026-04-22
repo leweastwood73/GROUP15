@@ -10,25 +10,25 @@ sources:
           freshness:
             warn_after: {count: 36, period: hour}
             error_after: {count: 72, period: hour}
-          loaded_at_field: _fivetran_synced
+          loaded_at_field: _FIVETRAN_SYNCED
       - name: HR_JOINS
         config:
           freshness:
             warn_after: {count: 36, period: hour}
             error_after: {count: 72, period: hour}
-          loaded_at_field: _fivetran_synced
+          loaded_at_field: _FIVETRAN_SYNCED
       - name: HR_QUITS
         config:
           freshness:
             warn_after: {count: 36, period: hour}
             error_after: {count: 72, period: hour}
-          loaded_at_field: _fivetran_synced
+          loaded_at_field: _FIVETRAN_SYNCED
       - name: RETURNS
         config:
           freshness:
             warn_after: {count: 36, period: hour}
             error_after: {count: 72, period: hour}
-          loaded_at_field: _fivetran_synced
+          loaded_at_field: _FIVETRAN_SYNCED
 
   - name: web_schema
     database: LOAD
@@ -39,22 +39,22 @@ sources:
           freshness:
             warn_after: {count: 36, period: hour}
             error_after: {count: 72, period: hour}
-          loaded_at_field: _fivetran_synced
+          loaded_at_field: _FIVETRAN_SYNCED
       - name: ORDERS
         config:
           freshness:
             warn_after: {count: 36, period: hour}
             error_after: {count: 72, period: hour}
-          loaded_at_field: _fivetran_synced
+          loaded_at_field: _FIVETRAN_SYNCED
       - name: PAGE_VIEWS
         config:
           freshness:
             warn_after: {count: 36, period: hour}
             error_after: {count: 72, period: hour}
-          loaded_at_field: _fivetran_synced
+          loaded_at_field: _FIVETRAN_SYNCED
       - name: SESSIONS
         config:
           freshness:
             warn_after: {count: 36, period: hour}
             error_after: {count: 72, period: hour}
-          loaded_at_field: _fivetran_synced
+          loaded_at_field: _FIVETRAN_SYNCED
