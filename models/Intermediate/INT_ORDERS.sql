@@ -13,6 +13,7 @@ with orders as (
         shipping_cost,
         tax_rate
     from {{ ref('base_web_schema_orders') }}
+    qualify row_number() over (partition by order_id order by order_at desc) = 1
 
 ),
 
@@ -22,6 +23,7 @@ sessions as (
         session_id,
         client_id
     from {{ ref('base_web_schema_sessions') }}
+    qualify row_number() over (partition by session_id order by session_at desc) = 1
 
 )
 

@@ -7,6 +7,7 @@ with sessions as (
         ip,
         session_at
     from {{ ref('base_web_schema_sessions') }}
+    qualify row_number() over (partition by session_id order by session_at desc) = 1
 
 ),
 
