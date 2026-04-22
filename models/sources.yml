@@ -10,25 +10,25 @@ sources:
           freshness:
             warn_after: {count: 36, period: hour}
             error_after: {count: 72, period: hour}
-          loaded_at_field: _FIVETRAN_SYNCED
+          loaded_at_query: "select max(_FIVETRAN_SYNCED) from LOAD.GOOGLE_DRIVE.EXPENSES"
       - name: HR_JOINS
         config:
           freshness:
             warn_after: {count: 36, period: hour}
             error_after: {count: 72, period: hour}
-          loaded_at_field: _FIVETRAN_SYNCED
+          loaded_at_query: "select max(_FIVETRAN_SYNCED) from LOAD.GOOGLE_DRIVE.HR_JOINS"
       - name: HR_QUITS
         config:
           freshness:
             warn_after: {count: 36, period: hour}
             error_after: {count: 72, period: hour}
-          loaded_at_field: _FIVETRAN_SYNCED
+          loaded_at_query: "select max(_FIVETRAN_SYNCED) from LOAD.GOOGLE_DRIVE.HR_QUITS"
       - name: RETURNS
         config:
           freshness:
             warn_after: {count: 36, period: hour}
             error_after: {count: 72, period: hour}
-          loaded_at_field: _FIVETRAN_SYNCED
+          loaded_at_query: "select max(_FIVETRAN_SYNCED) from LOAD.GOOGLE_DRIVE.RETURNS"
 
   - name: web_schema
     database: LOAD
@@ -39,22 +39,22 @@ sources:
           freshness:
             warn_after: {count: 36, period: hour}
             error_after: {count: 72, period: hour}
-          loaded_at_field: _FIVETRAN_SYNCED
+          loaded_at_query: "select max(_FIVETRAN_SYNCED) from LOAD.WEB_SCHEMA.ITEM_VIEWS"
       - name: ORDERS
         config:
           freshness:
             warn_after: {count: 36, period: hour}
             error_after: {count: 72, period: hour}
-          loaded_at_field: _FIVETRAN_SYNCED
+          loaded_at_query: "select max(_FIVETRAN_SYNCED) from LOAD.WEB_SCHEMA.ORDERS"
       - name: PAGE_VIEWS
         config:
           freshness:
             warn_after: {count: 36, period: hour}
             error_after: {count: 72, period: hour}
-          loaded_at_field: _FIVETRAN_SYNCED
+          loaded_at_query: "select max(_FIVETRAN_SYNCED) from LOAD.WEB_SCHEMA.PAGE_VIEWS"
       - name: SESSIONS
         config:
           freshness:
             warn_after: {count: 36, period: hour}
             error_after: {count: 72, period: hour}
-          loaded_at_field: _FIVETRAN_SYNCED
+          loaded_at_query: "select max(_FIVETRAN_SYNCED) from LOAD.WEB_SCHEMA.SESSIONS"
