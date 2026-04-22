@@ -4,27 +4,57 @@ sources:
   - name: google_drive
     database: LOAD
     schema: GOOGLE_DRIVE
-    config:
-      freshness:
-        warn_after: {count: 36, period: hour}
-        error_after: {count: 72, period: hour}
-      loaded_at_field: _fivetran_synced
     tables:
       - name: EXPENSES
+        config:
+          freshness:
+            warn_after: {count: 36, period: hour}
+            error_after: {count: 72, period: hour}
+          loaded_at_field: _fivetran_synced
       - name: HR_JOINS
+        config:
+          freshness:
+            warn_after: {count: 36, period: hour}
+            error_after: {count: 72, period: hour}
+          loaded_at_field: _fivetran_synced
       - name: HR_QUITS
+        config:
+          freshness:
+            warn_after: {count: 36, period: hour}
+            error_after: {count: 72, period: hour}
+          loaded_at_field: _fivetran_synced
       - name: RETURNS
+        config:
+          freshness:
+            warn_after: {count: 36, period: hour}
+            error_after: {count: 72, period: hour}
+          loaded_at_field: _fivetran_synced
 
   - name: web_schema
     database: LOAD
     schema: WEB_SCHEMA
-    config:
-      freshness:
-        warn_after: {count: 36, period: hour}
-        error_after: {count: 72, period: hour}
-      loaded_at_field: _fivetran_synced
     tables:
       - name: ITEM_VIEWS
+        config:
+          freshness:
+            warn_after: {count: 36, period: hour}
+            error_after: {count: 72, period: hour}
+          loaded_at_field: _fivetran_synced
       - name: ORDERS
+        config:
+          freshness:
+            warn_after: {count: 36, period: hour}
+            error_after: {count: 72, period: hour}
+          loaded_at_field: _fivetran_synced
       - name: PAGE_VIEWS
+        config:
+          freshness:
+            warn_after: {count: 36, period: hour}
+            error_after: {count: 72, period: hour}
+          loaded_at_field: _fivetran_synced
       - name: SESSIONS
+        config:
+          freshness:
+            warn_after: {count: 36, period: hour}
+            error_after: {count: 72, period: hour}
+          loaded_at_field: _fivetran_synced
