@@ -4,6 +4,10 @@ sources:
   - name: google_drive
     database: LOAD
     schema: GOOGLE_DRIVE
+    loaded_at_field: _fivetran_synced
+    freshness:
+      warn_after: {count: 36, period: hour}
+      error_after: {count: 72, period: hour}
     tables:
       - name: EXPENSES
       - name: HR_JOINS
@@ -13,10 +17,12 @@ sources:
   - name: web_schema
     database: LOAD
     schema: WEB_SCHEMA
+    loaded_at_field: _fivetran_synced
+    freshness:
+      warn_after: {count: 36, period: hour}
+      error_after: {count: 72, period: hour}
     tables:
-    - name: ITEM_VIEWS
-    - name: ORDERS
-    - name: PAGE_VIEWS
-    - name: SESSIONS
-
-
+      - name: ITEM_VIEWS
+      - name: ORDERS
+      - name: PAGE_VIEWS
+      - name: SESSIONS
