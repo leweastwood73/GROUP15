@@ -4,25 +4,49 @@ sources:
   - name: google_drive
     database: LOAD
     schema: GOOGLE_DRIVE
-    loaded_at_field: _fivetran_synced
-    freshness:
-      warn_after: {count: 36, period: hour}
-      error_after: {count: 72, period: hour}
     tables:
       - name: EXPENSES
+        loaded_at_field: _fivetran_synced
+        freshness:
+          warn_after: {count: 36, period: hour}
+          error_after: {count: 72, period: hour}
       - name: HR_JOINS
+        loaded_at_field: _fivetran_synced
+        freshness:
+          warn_after: {count: 36, period: hour}
+          error_after: {count: 72, period: hour}
       - name: HR_QUITS
+        loaded_at_field: _fivetran_synced
+        freshness:
+          warn_after: {count: 36, period: hour}
+          error_after: {count: 72, period: hour}
       - name: RETURNS
+        loaded_at_field: _fivetran_synced
+        freshness:
+          warn_after: {count: 36, period: hour}
+          error_after: {count: 72, period: hour}
 
   - name: web_schema
     database: LOAD
     schema: WEB_SCHEMA
-    loaded_at_field: _fivetran_synced
-    freshness:
-      warn_after: {count: 36, period: hour}
-      error_after: {count: 72, period: hour}
     tables:
       - name: ITEM_VIEWS
+        loaded_at_field: _fivetran_synced
+        freshness:
+          warn_after: {count: 36, period: hour}
+          error_after: {count: 72, period: hour}
       - name: ORDERS
+        loaded_at_field: _fivetran_synced
+        freshness:
+          warn_after: {count: 36, period: hour}
+          error_after: {count: 72, period: hour}
       - name: PAGE_VIEWS
+        loaded_at_field: _fivetran_synced
+        freshness:
+          warn_after: {count: 36, period: hour}
+          error_after: {count: 72, period: hour}
       - name: SESSIONS
+        loaded_at_field: _fivetran_synced
+        freshness:
+          warn_after: {count: 36, period: hour}
+          error_after: {count: 72, period: hour}
