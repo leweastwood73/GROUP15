@@ -6,55 +6,15 @@ sources:
     schema: GOOGLE_DRIVE
     tables:
       - name: EXPENSES
-        config:
-          loaded_at_query: "select max(_FIVETRAN_SYNCED) from LOAD.GOOGLE_DRIVE.EXPENSES"
-          freshness:
-            warn_after: {count: 36, period: hour}
-            error_after: {count: 72, period: hour}
       - name: HR_JOINS
-        config:
-          loaded_at_query: "select max(_FIVETRAN_SYNCED) from LOAD.GOOGLE_DRIVE.HR_JOINS"
-          freshness:
-            warn_after: {count: 36, period: hour}
-            error_after: {count: 72, period: hour}
       - name: HR_QUITS
-        config:
-          loaded_at_query: "select max(_FIVETRAN_SYNCED) from LOAD.GOOGLE_DRIVE.HR_QUITS"
-          freshness:
-            warn_after: {count: 36, period: hour}
-            error_after: {count: 72, period: hour}
       - name: RETURNS
-        config:
-          loaded_at_query: "select max(_FIVETRAN_SYNCED) from LOAD.GOOGLE_DRIVE.RETURNS"
-          freshness:
-            warn_after: {count: 36, period: hour}
-            error_after: {count: 72, period: hour}
 
   - name: web_schema
     database: LOAD
     schema: WEB_SCHEMA
     tables:
       - name: ITEM_VIEWS
-        config:
-          loaded_at_query: "select max(_FIVETRAN_SYNCED) from LOAD.WEB_SCHEMA.ITEM_VIEWS"
-          freshness:
-            warn_after: {count: 36, period: hour}
-            error_after: {count: 72, period: hour}
       - name: ORDERS
-        config:
-          loaded_at_query: "select max(_FIVETRAN_SYNCED) from LOAD.WEB_SCHEMA.ORDERS"
-          freshness:
-            warn_after: {count: 36, period: hour}
-            error_after: {count: 72, period: hour}
       - name: PAGE_VIEWS
-        config:
-          loaded_at_query: "select max(_FIVETRAN_SYNCED) from LOAD.WEB_SCHEMA.PAGE_VIEWS"
-          freshness:
-            warn_after: {count: 36, period: hour}
-            error_after: {count: 72, period: hour}
       - name: SESSIONS
-        config:
-          loaded_at_query: "select max(_FIVETRAN_SYNCED) from LOAD.WEB_SCHEMA.SESSIONS"
-          freshness:
-            warn_after: {count: 36, period: hour}
-            error_after: {count: 72, period: hour}
