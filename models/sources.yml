@@ -11,24 +11,54 @@ sources:
             warn_after: {count: 36, period: hour}
             error_after: {count: 72, period: hour}
           loaded_at_field: _FIVETRAN_SYNCED
+        columns:
+          - name: _LINE
+            tests:
+              - not_null
+          - name: DATE
+            tests:
+              - not_null
+          - name: EXPENSE_TYPE
+            tests:
+              - not_null
+          - name: EXPENSE_AMOUNT
+            tests:
+              - not_null
+
       - name: HR_JOINS
         config:
           freshness:
             warn_after: {count: 36, period: hour}
             error_after: {count: 72, period: hour}
           loaded_at_field: _FIVETRAN_SYNCED
+        columns:
+          - name: EMPLOYEE_ID
+            tests:
+              - unique
+              - not_null
+
       - name: HR_QUITS
         config:
           freshness:
             warn_after: {count: 36, period: hour}
             error_after: {count: 72, period: hour}
           loaded_at_field: _FIVETRAN_SYNCED
+        columns:
+          - name: EMPLOYEE_ID
+            tests:
+              - unique
+              - not_null
+
       - name: RETURNS
         config:
           freshness:
             warn_after: {count: 36, period: hour}
             error_after: {count: 72, period: hour}
           loaded_at_field: _FIVETRAN_SYNCED
+        columns:
+          - name: ORDER_ID
+            tests:
+              - not_null
 
   - name: web_schema
     database: LOAD
@@ -40,21 +70,48 @@ sources:
             warn_after: {count: 36, period: hour}
             error_after: {count: 72, period: hour}
           loaded_at_field: '"_fivetran_synced"'
+        columns:
+          - name: SESSION_ID
+            tests:
+              - not_null
+
       - name: ORDERS
         config:
           freshness:
             warn_after: {count: 36, period: hour}
             error_after: {count: 72, period: hour}
           loaded_at_field: '"_fivetran_synced"'
+        columns:
+          - name: ORDER_ID
+            tests:
+              - unique
+              - not_null
+          - name: SESSION_ID
+            tests:
+              - not_null
+
       - name: PAGE_VIEWS
         config:
           freshness:
             warn_after: {count: 36, period: hour}
             error_after: {count: 72, period: hour}
           loaded_at_field: '"_fivetran_synced"'
+        columns:
+          - name: SESSION_ID
+            tests:
+              - not_null
+
       - name: SESSIONS
         config:
           freshness:
             warn_after: {count: 36, period: hour}
             error_after: {count: 72, period: hour}
           loaded_at_field: '"_fivetran_synced"'
+        columns:
+          - name: SESSION_ID
+            tests:
+              - unique
+              - not_null
+          - name: CLIENT_ID
+            tests:
+              - not_null
