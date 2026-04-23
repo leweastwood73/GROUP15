@@ -47,6 +47,3 @@ models:
       +materialized: table
       +schema: Analytics
       +database: PROD
-    core:
-      +materialized: table
-      +schema: CORE
