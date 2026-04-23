@@ -42,10 +42,10 @@ models:
       +schema: BASE
     Intermediate:
       +materialized: view
-      +schema: INTERMEDIATE
+      +schema: Intermediate
     Analytics:
       +materialized: table
-      +schema: ANALYTICS
+      +schema: Analytics
       +database: PROD
     core:
       +materialized: table
