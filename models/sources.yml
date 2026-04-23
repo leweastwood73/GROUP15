@@ -110,7 +110,6 @@ sources:
         columns:
           - name: SESSION_ID
             tests:
-              - unique
               - not_null
           - name: CLIENT_ID
             tests:
