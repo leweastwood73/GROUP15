@@ -58,7 +58,6 @@ session_gross_revenue AS (
 session_shipping AS (
     SELECT
         session_id,
-        COUNT(DISTINCT order_id) AS order_count,
         SUM(COALESCE(shipping_cost, 0)) AS total_shipping_cost
     FROM cleaned_orders
     GROUP BY session_id
@@ -118,10 +117,13 @@ SELECT
     b.first_item_view_at,
     b.last_item_view_at,
     COALESCE(o.order_count, 0) AS order_count,
-    COALESCE(r.gross_item_revenue, 0) AS gross_item_revenue,
-    COALESCE(a.shipping_cost_allocated, 0) AS shipping_cost_allocated,
-    COALESCE(r.gross_item_revenue, 0) - COALESCE(a.shipping_cost_allocated, 0) AS total_revenue_after_shipping,
-    SUM(COALESCE(r.gross_item_revenue, 0) - COALESCE(a.shipping_cost_allocated, 0)) OVER () AS grand_total_revenue_after_shipping
+    ROUND(COALESCE(r.gross_item_revenue, 0), 2) AS gross_item_revenue,
+    ROUND(COALESCE(a.shipping_cost_allocated, 0), 2) AS shipping_cost_allocated,
+    ROUND(COALESCE(r.gross_item_revenue, 0) - COALESCE(a.shipping_cost_allocated, 0), 2) AS total_revenue_after_shipping,
+    ROUND(
+        SUM(COALESCE(r.gross_item_revenue, 0) - COALESCE(a.shipping_cost_allocated, 0)) OVER (),
+        2
+    ) AS grand_total_revenue_after_shipping
 FROM item_base b
 LEFT JOIN item_revenue_rollup r
     ON b.item_name = r.item_name
