@@ -1,58 +1,36 @@
 WITH cleaned_item_views AS (
     SELECT
         TRY_TO_NUMBER(REGEXP_REPLACE(TRIM(SESSION_ID), '^s', '')) AS session_id,
-        TRIM(ITEM_NAME) AS item_name,
+        NULLIF(TRIM(ITEM_NAME), '') AS item_name,
+        LOWER(NULLIF(TRIM(ITEM_NAME), '')) AS item_name_key,
         TRY_TO_DECIMAL(REGEXP_REPLACE(PRICE_PER_UNIT, '[^0-9.]', ''), 10, 2) AS price_per_unit,
+        ITEM_VIEW_AT AS item_view_at,
         TRY_TO_NUMBER(REMOVE_FROM_CART_QUANTITY) AS remove_from_cart_quantity,
         TRY_TO_NUMBER(ADD_TO_CART_QUANTITY) AS add_to_cart_quantity
     FROM LOAD.WEB_SCHEMA.ITEM_VIEWS
 ),
 
-cleaned_sessions AS (
+item_rollup AS (
     SELECT
-        TRY_TO_NUMBER(REGEXP_REPLACE(TRIM(SESSION_ID), '^s', '')) AS session_id
-    FROM LOAD.WEB_SCHEMA.SESSIONS
-),
-
-cleaned_orders AS (
-    SELECT
-        TRY_TO_NUMBER(REGEXP_REPLACE(TRIM(SESSION_ID), '^s', '')) AS session_id,
-        TRIM(ORDER_ID) AS order_id,
-        TRY_TO_DECIMAL(REGEXP_REPLACE(SHIPPING_COST, '[^0-9.-]', ''), 10, 2) AS shipping_cost
-    FROM LOAD.WEB_SCHEMA.ORDERS
-),
-
-session_item_revenue AS (
-    SELECT
-        session_id,
+        MD5(item_name_key) AS item_id,
+        MIN(item_name) AS item_name,
+        ARRAY_AGG(DISTINCT price_per_unit) AS price_per_unit_array,
+        MIN(item_view_at) AS first_item_view_at,
+        MAX(item_view_at) AS last_item_view_at,
         SUM(
             COALESCE(price_per_unit, 0) *
-            GREATEST(
-                COALESCE(add_to_cart_quantity, 0) - COALESCE(remove_from_cart_quantity, 0),
-                0
-            )
+            GREATEST(COALESCE(add_to_cart_quantity, 0) - COALESCE(remove_from_cart_quantity, 0), 0)
         ) AS gross_item_revenue
     FROM cleaned_item_views
-    GROUP BY session_id
-),
-
-session_shipping AS (
-    SELECT
-        session_id,
-        COUNT(DISTINCT order_id) AS order_count,
-        SUM(COALESCE(shipping_cost, 0)) AS total_shipping_cost
-    FROM cleaned_orders
-    GROUP BY session_id
+    WHERE item_name_key IS NOT NULL
+    GROUP BY item_name_key
 )
 
 SELECT
-    s.session_id,
-    COALESCE(sh.order_count, 0) AS order_count,
-    ROUND(COALESCE(r.gross_item_revenue, 0), 2) AS gross_item_revenue,
-    ROUND(COALESCE(sh.total_shipping_cost, 0), 2) AS total_shipping_cost,
-    ROUND(COALESCE(r.gross_item_revenue, 0) - COALESCE(sh.total_shipping_cost, 0), 2) AS total_revenue_after_shipping
-FROM cleaned_sessions s
-LEFT JOIN session_item_revenue r
-    ON s.session_id = r.session_id
-LEFT JOIN session_shipping sh
-    ON s.session_id = sh.session_id
+    item_id,
+    item_name,
+    price_per_unit_array,
+    first_item_view_at,
+    last_item_view_at,
+    ROUND(COALESCE(gross_item_revenue, 0), 2) AS gross_item_revenue
+FROM item_rollup
