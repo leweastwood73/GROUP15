@@ -13,9 +13,12 @@ SELECT
     item_revenue_in_session,
     session_gross_revenue,
     session_shipping_cost,
-    total_profit_per_session
+    total_profit_per_session,
+    session_gross_revenue_metric,
+    total_profit_per_session_metric
 FROM {{ ref('INT_ITEM') }}
 WHERE item_id IS NOT NULL
   AND NULLIF(TRIM(item_name), '') IS NOT NULL
+
 
 
