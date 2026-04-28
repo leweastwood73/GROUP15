@@ -6,11 +6,13 @@ WITH cleaned_item_views AS (
         TRY_TO_NUMBER(REMOVE_FROM_CART_QUANTITY) AS remove_from_cart_quantity
     FROM LOAD.WEB_SCHEMA.ITEM_VIEWS
 ),
+
 cleaned_sessions AS (
     SELECT
         TRY_TO_NUMBER(REGEXP_REPLACE(TRIM(SESSION_ID), '^s', '')) AS session_id
     FROM LOAD.WEB_SCHEMA.SESSIONS
 ),
+
 session_gross_revenue AS (
     SELECT
         session_id,
@@ -31,4 +33,4 @@ SELECT
 FROM cleaned_sessions s
 LEFT JOIN session_gross_revenue r
     ON s.session_id = r.session_id
-ORDER BY s.session_id;
+
