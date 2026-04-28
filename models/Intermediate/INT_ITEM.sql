@@ -20,6 +20,13 @@ base_sessions AS (
     FROM LOAD.WEB_SCHEMA.SESSIONS
 ),
 
+base_orders AS (
+    SELECT
+        TRY_TO_NUMBER(REGEXP_REPLACE(TRIM(SESSION_ID), '^s', '')) AS session_id,
+        TRY_TO_DECIMAL(REGEXP_REPLACE(SHIPPING_COST, '[^0-9.-]', ''), 10, 2) AS shipping_cost
+    FROM LOAD.WEB_SCHEMA.ORDERS
+),
+
 item_session_rollup AS (
     SELECT
         session_id,
@@ -43,6 +50,14 @@ session_gross_revenue AS (
         SUM(item_revenue_in_session) AS gross_revenue
     FROM item_session_rollup
     GROUP BY session_id
+),
+
+session_shipping AS (
+    SELECT
+        session_id,
+        SUM(COALESCE(shipping_cost, 0)) AS total_shipping_cost
+    FROM base_orders
+    GROUP BY session_id
 )
 
 SELECT
@@ -57,11 +72,15 @@ SELECT
     i.first_item_view_at,
     i.last_item_view_at,
     ROUND(COALESCE(i.item_revenue_in_session, 0), 2) AS item_revenue_in_session,
-    ROUND(COALESCE(g.gross_revenue, 0), 2) AS session_gross_revenue
+    ROUND(COALESCE(g.gross_revenue, 0), 2) AS session_gross_revenue,
+    ROUND(COALESCE(sh.total_shipping_cost, 0), 2) AS session_shipping_cost,
+    ROUND(COALESCE(g.gross_revenue, 0) - COALESCE(sh.total_shipping_cost, 0), 2) AS total_profit_per_session
 FROM item_session_rollup i
 LEFT JOIN base_sessions s
     ON i.session_id = s.session_id
 LEFT JOIN session_gross_revenue g
     ON i.session_id = g.session_id
+LEFT JOIN session_shipping sh
+    ON i.session_id = sh.session_id
 
 
