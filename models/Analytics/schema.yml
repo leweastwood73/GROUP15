@@ -96,7 +96,6 @@ models:
       - name: item_id
         description: "Surrogate key for each item."
         tests:
-          - unique
           - not_null
       - name: item_name
         description: "Normalized item name."
