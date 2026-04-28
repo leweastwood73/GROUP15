@@ -58,29 +58,46 @@ session_shipping AS (
         SUM(COALESCE(shipping_cost, 0)) AS total_shipping_cost
     FROM base_orders
     GROUP BY session_id
+),
+
+final_base AS (
+    SELECT
+        MD5(i.item_name_key) AS item_id,
+        i.item_name,
+        i.session_id,
+        s.client_id,
+        s.session_at,
+        s.os,
+        s.ip,
+        i.price_per_unit_array,
+        i.first_item_view_at,
+        i.last_item_view_at,
+        ROUND(COALESCE(i.item_revenue_in_session, 0), 2) AS item_revenue_in_session,
+        ROUND(COALESCE(g.gross_revenue, 0), 2) AS session_gross_revenue,
+        ROUND(COALESCE(sh.total_shipping_cost, 0), 2) AS session_shipping_cost,
+        ROUND(COALESCE(g.gross_revenue, 0) - COALESCE(sh.total_shipping_cost, 0), 2) AS total_profit_per_session
+    FROM item_session_rollup i
+    LEFT JOIN base_sessions s
+        ON i.session_id = s.session_id
+    LEFT JOIN session_gross_revenue g
+        ON i.session_id = g.session_id
+    LEFT JOIN session_shipping sh
+        ON i.session_id = sh.session_id
 )
 
 SELECT
-    MD5(i.item_name_key) AS item_id,
-    i.item_name,
-    i.session_id,
-    s.client_id,
-    s.session_at,
-    s.os,
-    s.ip,
-    i.price_per_unit_array,
-    i.first_item_view_at,
-    i.last_item_view_at,
-    ROUND(COALESCE(i.item_revenue_in_session, 0), 2) AS item_revenue_in_session,
-    ROUND(COALESCE(g.gross_revenue, 0), 2) AS session_gross_revenue,
-    ROUND(COALESCE(sh.total_shipping_cost, 0), 2) AS session_shipping_cost,
-    ROUND(COALESCE(g.gross_revenue, 0) - COALESCE(sh.total_shipping_cost, 0), 2) AS total_profit_per_session
-FROM item_session_rollup i
-LEFT JOIN base_sessions s
-    ON i.session_id = s.session_id
-LEFT JOIN session_gross_revenue g
-    ON i.session_id = g.session_id
-LEFT JOIN session_shipping sh
-    ON i.session_id = sh.session_id
+    *,
+    CASE
+        WHEN ROW_NUMBER() OVER (PARTITION BY session_id ORDER BY item_id) = 1
+            THEN session_gross_revenue
+        ELSE 0
+    END AS session_gross_revenue_metric,
+    CASE
+        WHEN ROW_NUMBER() OVER (PARTITION BY session_id ORDER BY item_id) = 1
+            THEN total_profit_per_session
+        ELSE 0
+    END AS total_profit_per_session_metric
+FROM final_base
+
 
 
